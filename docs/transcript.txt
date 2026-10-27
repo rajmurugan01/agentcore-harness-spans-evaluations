@@ -1,0 +1,39 @@
+
+== reverting Transaction Search ==
+  TIMEOUT waiting for XRay ACTIVE; now ('XRay', 'PENDING')
+  deleted resource policy HarnessSpansDemoTransactionSearch
+  deleted empty log group aws/spans
+  deleted empty log group /aws/application-signals/data
+  final destination: ('XRay', 'PENDING')
+
+== BASELINE (Transaction Search OFF) ==
+  trace segment destination at start: XRay PENDING
+  log group aws/spans exists: False
+  invoked session baseline-20463105d4b44f85b9fc3e36ba898778-session
+  reply: 2+2 = 4.
+  spans delivered for this session (runtime log group, 'spans' stream): 0 after 163s
+  batch evaluation: FAILED  sessions completed=0 failed=1
+    error.type=JobProcessorCustomerException
+    error.message=No spans were found for the session. Verify sessionId and that spans exist in CloudWatch Logs within the configured time range. sessionId=baseline-20463105d4b44f85b9fc3e36ba898778-session
+
+== enabling Transaction Search (account-wide for this Region) ==
+  prior destination: ('XRay', 'ACTIVE')
+  trace segment destination: CloudWatchLogs ACTIVE (after 366s)
+
+== AFTER (Transaction Search ON) ==
+  trace segment destination at start: CloudWatchLogs ACTIVE
+  log group aws/spans exists: True
+  invoked session after-4a4a5b01c5a84dc0b77fadbe76bb93e9-session
+  reply: 2 + 2 = 4.
+  spans delivered for this session (runtime log group, 'spans' stream): 5 after 17s
+  span names: {'chat us.anthropic.claude-haiku-4-5-20251001-v1:0': 1, 'chat': 1, 'execute_event_loop_cycle': 1, 'invoke_agent Strands Agents': 1, 'POST /invocations': 1}
+  batch evaluation: COMPLETED  sessions completed=1 failed=0
+    Builtin.Helpfulness: average score 0.83
+
+== reverting Transaction Search ==
+  TIMEOUT waiting for XRay ACTIVE; now ('XRay', 'PENDING')
+  deleted resource policy HarnessSpansDemoTransactionSearch
+  deleted empty log group aws/spans
+  deleted empty log group /aws/application-signals/data
+  final destination: ('XRay', 'PENDING')
+exit 0

@@ -1,0 +1,10 @@
+
+== BASELINE (Transaction Search OFF) ==
+  trace segment destination at start: XRay ACTIVE
+  log group aws/spans exists: False
+  invoked session baseline-4915d5e72b1a4953b443f4e0c53d4744-session
+  reply: 2+2 is 4.
+  spans delivered for this session (runtime log group, 'spans' stream): 0 after 150s
+  batch evaluation: FAILED  sessions completed=0 failed=1
+    error.type=JobProcessorCustomerException
+    error.message=No spans were found for the session. Verify sessionId and that spans exist in CloudWatch Logs within the configured time range. sessionId=baseline-4915d5e72b1a4953b443f4e0c53d4744-session
